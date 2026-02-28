@@ -1,0 +1,50 @@
+name: Deploy Shopify Theme
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install Shopify CLI
+      run: npm install -g @shopify/cli@latest
+
+    - name: Deploy to Development Theme
+      if: github.event_name == 'pull_request'
+      run: |
+        shopify theme push --store ${{ secrets.SHOPIFY_STORE }} --theme ${{ secrets.SHOPIFY_DEV_THEME_ID }} --allow-live
+      env:
+        SHOPIFY_CLI_TOKEN: ${{ secrets.SHOPIFY_CLI_TOKEN }}
+
+    - name: Deploy to Live Theme
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: |
+        shopify theme push --store ${{ secrets.SHOPIFY_STORE }} --theme ${{ secrets.SHOPIFY_LIVE_THEME_ID }} --allow-live
+      env:
+        SHOPIFY_CLI_TOKEN: ${{ secrets.SHOPIFY_CLI_TOKEN }}
+
+    - name: Comment PR with Preview URL
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '🎉 **Theme deployed successfully!**\n\n📱 **Preview URL:** https://${{ secrets.SHOPIFY_STORE }}.myshopify.com/?preview_theme_id=${{ secrets.SHOPIFY_DEV_THEME_ID }}\n\n⚡ Changes are now live on the development theme!'
+          })

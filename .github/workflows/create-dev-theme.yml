@@ -1,0 +1,68 @@
+name: Create Development Theme for PR
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize ]
+
+jobs:
+  create-dev-theme:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install Shopify CLI
+      run: npm install -g @shopify/cli@latest
+
+    - name: Create Development Theme
+      id: create-theme
+      run: |
+        THEME_NAME="PR-${{ github.event.number }}-$(date +%Y%m%d-%H%M)"
+        echo "Creating theme: $THEME_NAME"
+        
+        # Create new development theme
+        THEME_ID=$(shopify theme push --store ${{ secrets.SHOPIFY_STORE }} --unpublished --theme-name "$THEME_NAME" --json | jq -r '.theme.id')
+        
+        echo "theme-id=$THEME_ID" >> $GITHUB_OUTPUT
+        echo "theme-name=$THEME_NAME" >> $GITHUB_OUTPUT
+        echo "preview-url=https://${{ secrets.SHOPIFY_STORE }}.myshopify.com/?preview_theme_id=$THEME_ID" >> $GITHUB_OUTPUT
+      env:
+        SHOPIFY_CLI_TOKEN: ${{ secrets.SHOPIFY_CLI_TOKEN }}
+
+    - name: Comment on PR
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const themeId = '${{ steps.create-theme.outputs.theme-id }}';
+          const themeName = '${{ steps.create-theme.outputs.theme-name }}';
+          const previewUrl = '${{ steps.create-theme.outputs.preview-url }}';
+          
+          const comment = `
+          🚀 **Development Theme Created!**
+          
+          **Theme Name:** ${themeName}
+          **Theme ID:** ${themeId}
+          **Preview URL:** ${previewUrl}
+          
+          > 💡 This theme will be automatically updated when you push changes to this PR.
+          > 🗑️ The theme will be cleaned up when the PR is merged or closed.
+          `;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+
+    - name: Save theme info
+      run: |
+        echo "Theme ID: ${{ steps.create-theme.outputs.theme-id }}" >> theme-info.txt
+        echo "Theme Name: ${{ steps.create-theme.outputs.theme-name }}" >> theme-info.txt
