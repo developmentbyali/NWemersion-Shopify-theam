@@ -16,9 +16,9 @@
 
 {%- liquid
   assign order = order | split: ','
-  assign left = ''
-  assign center = ''
-  assign right = ''
+  assign left = 'logo'
+  assign center = 'menu'
+  assign right = 'actions'
 
   if first != blank
     assign left = 'first '
@@ -34,17 +34,7 @@
       when 'actions'
         assign item_column = 'right'
     endcase
-
-    if item_row == row
-      case item_column
-        when 'left'
-          assign left = left | append: item | append: ' '
-        when 'center'
-          assign center = center | append: item | append: ' '
-        else
-          assign right = right | append: item | append: ' '
-      endcase
-    endif
+    
   endfor
 
   assign columns = 'left,center,right' | split: ','
