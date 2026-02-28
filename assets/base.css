@@ -1,5 +1,34 @@
+/* ===== GLOBAL APPLE COLOR SYSTEM OVERRIDE ===== */
 * {
   box-sizing: border-box;
+}
+
+/* Force Apple colors globally */
+body, 
+html,
+.shopify-section {
+  background-color: #f5f5f7 !important;
+  color: #1d1d1f !important;
+}
+
+/* Override any theme color variables */
+:root {
+  --color-background: #f5f5f7 !important;
+  --color-foreground: #1d1d1f !important;
+  --color-foreground-rgb: 29, 29, 31 !important;
+  --color-background-rgb: 245, 245, 247 !important;
+}
+
+/* Text elements */
+h1, h2, h3, h4, h5, h6,
+p, span, div,
+.text, .content {
+  color: #1d1d1f !important;
+}
+
+/* Remove any red color overrides */
+a:not(.header a):not(.footer a) {
+  color: #0071e3 !important;
 }
 
 body {
@@ -4954,9 +4983,13 @@ product-recommendations:has([data-has-recommendations='false']) {
 /* Compact dark header */
 #header-component {
   background: #1d1d1f !important;
-  color: #f5f5f7;
-  box-shadow: none;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  color: #f5f5f7 !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+#header-component * {
+  color: #f5f5f7 !important;
 }
 
 #header-component .header__columns {
@@ -4967,24 +5000,32 @@ product-recommendations:has([data-has-recommendations='false']) {
 }
 
 .header__row--top {
-  background: transparent;
+  background: transparent !important;
 }
 
+/* Hide announcement bar */
+.announcement-bar {
+  display: none !important;
+}
+
+/* Menu styling */
 .header-menu .menu-list__list {
   gap: 32px !important;
 }
 
 .menu-list__link .menu-list__link-title,
 .menu-list__item .menu-list__link-title,
-.menu-list__link {
+.menu-list__link,
+.header-menu a {
   color: #f5f5f7 !important;
   font-size: 17px !important;
   font-weight: 400 !important;
-  letter-spacing: -0.022em;
+  letter-spacing: -0.022em !important;
 }
 
 .menu-list__link:hover,
-.menu-list__link[aria-current='page'] {
+.menu-list__link[aria-current='page'],
+.header-menu a:hover {
   color: #0071e3 !important;
 }
 
@@ -4993,33 +5034,79 @@ product-recommendations:has([data-has-recommendations='false']) {
 }
 
 .header-actions__action,
-.search-action {
+.search-action,
+.header-actions svg {
   color: #f5f5f7 !important;
+  fill: #f5f5f7 !important;
 }
 
 /* Footer: dark background with light text */
-footer {
-  background: #1d1d1f;
-  color: #f5f5f7;
-  border-top: 1px solid rgba(255,255,255,0.08);
+footer,
+.footer,
+.footer-section {
+  background: #1d1d1f !important;
+  color: #f5f5f7 !important;
+  border-top: 1px solid rgba(255,255,255,0.08) !important;
 }
 
-.footer-section,
-.footer {
-  color: #f5f5f7;
+.footer *,
+.footer-section * {
+  color: #f5f5f7 !important;
 }
 
 .footer a {
-  color: #86868b;
+  color: #86868b !important;
 }
 
 .footer a:hover {
-  color: #f5f5f7;
+  color: #f5f5f7 !important;
 }
 
 /* Ensure hero content sits below header when header is absolute/transparent */
 main > .shopify-section:first-child {
   padding-top: 20px;
+}
+
+/* Force main content area colors */
+main,
+.main-content,
+.shopify-section,
+.section,
+.container {
+  background-color: #f5f5f7 !important;
+  color: #1d1d1f !important;
+}
+
+/* Product cards and content */
+.product-card,
+.card,
+.content-card {
+  background-color: #ffffff !important;
+  color: #1d1d1f !important;
+}
+
+/* Buttons */
+.btn,
+.button,
+button,
+input[type="submit"] {
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.btn:hover,
+.button:hover,
+button:hover,
+input[type="submit"]:hover {
+  background-color: #0077ed !important;
+}
+
+/* Override any remaining color variables */
+.shopify-section {
+  --color-foreground: #1d1d1f;
+  --color-background: #f5f5f7;
+  --color-primary: #0071e3;
 }
 
 @media screen and (max-width: 749px) {
