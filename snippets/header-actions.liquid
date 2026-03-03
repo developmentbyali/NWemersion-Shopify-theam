@@ -17,7 +17,12 @@
       class="svg-wrapper {% if display_style != 'icon' %}desktop:hidden{% endif %}"
       aria-hidden="true"
     >
-      {{ 'icon-cart.svg' | inline_asset_content }}
+      <!-- Custom improved cart icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="21" r="1"></circle>
+        <circle cx="20" cy="21" r="1"></circle>
+        <path d="m1 1 4 4 5.5 9.5h9.25a2 2 0 0 0 2-1.75L23 6H6"></path>
+      </svg>
     </span>
 
     {% render 'cart-bubble', limit: 100, live_region: true %}
@@ -49,55 +54,17 @@
   {% endif %}
   {{- block.shopify_attributes -}}
 >
-  {% if shop.customer_accounts_enabled %}
-    {% liquid
-      assign account_actions_style = ''
-      if display_style == 'text' and section
-        assign actions_font = section.settings.actions_font | default: 'body'
-        assign font_obj = settings.type_heading_font
-        case actions_font
-          when 'body'
-            assign font_obj = settings.type_body_font
-          when 'subheading'
-            assign font_obj = settings.type_subheading_font
-          when 'accent'
-            assign font_obj = settings.type_accent_font
-        endcase
-        assign font_family = font_obj.family | append: ', ' | append: font_obj.fallback_families
-        assign font_family_safe = font_family | replace: '"', "'"
-        assign account_actions_style = '--header-actions-font-family: ' | append: font_family_safe | append: '; --header-actions-font-weight: ' | append: font_obj.weight | append: ';'
-      endif
-    %}
-    <div
-      class="account-button header-actions__action{% if display_style == 'text' %} account-button--text{% endif %} color-{{ settings.popover_color_scheme }}"
-    >
-      <shopify-account
-        menu="{{ customer_account_menu }}"
-        {% if account_actions_style != blank %}
-          style="{{ account_actions_style }}"
-        {% endif %}
-      >
-        {% if customer %}
-          <div class="account-button__fallback"></div>
-        {% else %}
-          <span
-            slot="signed-out-avatar"
-            class="account-button__text header-actions__text-style {% if display_style == 'icon' %}hidden{% else %}mobile:hidden{% endif %}"
-          >
-            {{ 'content.account_title' | t }}
-          </span>
-
-          <span
-            slot="signed-out-avatar"
-            class="{% if display_style != 'icon' %}desktop:hidden{% endif %}"
-            aria-hidden="true"
-          >
-            {{ account_icon }}
-          </span>
-        {% endif %}
-      </shopify-account>
-    </div>
+  {% comment %} Account icon removed - replaced with custom contact info {% endcomment %}
+  {% if false %}
+    {% comment %} Original account section commented out {% endcomment %}
   {% endif %}
+  
+  {% comment %} NW Immersion Custom Contact Info {% endcomment %}
+  <div class="header-actions__contact-info">
+    <a href="tel:+13603605868" class="header-actions__phone">
+      <span class="header-actions__phone-text">📞 (360) 360-5868</span>
+    </a>
+  </div>
 
   {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
     <script

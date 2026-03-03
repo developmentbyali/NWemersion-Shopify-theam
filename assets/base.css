@@ -4944,3 +4944,42 @@ product-recommendations:has([data-has-recommendations='false']) {
     translate: 0px var(--atc-destination, 0px);
   }
 }
+
+/* Header contact info styles */
+.header-actions__contact-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--minimum-touch-target);
+}
+
+.header-actions__phone {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  padding: var(--padding-sm);
+  text-decoration: none;
+  color: var(--color-foreground);
+  font-size: var(--font-paragraph--size);
+  transition: color var(--animation-speed) var(--animation-easing);
+  min-height: var(--minimum-touch-target);
+  justify-content: center;
+  border-radius: var(--style-border-radius-buttons-primary);
+}
+
+.header-actions__phone:hover {
+  color: var(--color-primary);
+  background-color: rgb(var(--color-foreground-rgb) / var(--opacity-5));
+}
+
+.header-actions__phone-text {
+  font-weight: 500;
+  white-space: nowrap;
+  font-size: 0.875rem;
+}
+
+@media screen and (max-width: 749px) {
+  .header-actions__phone-text {
+    font-size: 0.8rem;
+  }
+}
