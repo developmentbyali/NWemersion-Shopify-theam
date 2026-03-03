@@ -945,7 +945,6 @@ h6,
 /* Links */
 a {
   --button-color: var(--color, var(--color-primary));
-  color: red !important;
 
   color: var(--button-color);
   text-decoration-color: transparent;
